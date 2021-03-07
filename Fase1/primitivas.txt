@@ -1,0 +1,121 @@
+void drawBox(float x, float y, float z, int w) {
+	
+	float newx = x / (w + 1);
+	float newz = z / (w + 1);
+	float newy = y / (w + 1);
+
+	for (float i = - (x/2); i < x/2; i += newx) {
+		for (float j = - (z/2); j < z/2; j += newz) {
+			glBegin(GL_TRIANGLES);
+		// BASE
+				glColor3f(1.0f, 0.0f, 0.0f);
+				glVertex3f(i, 0.0f, j);
+				glVertex3f(i + newx, 0.0f, j);
+				glVertex3f(i + newx, 0.0f, j + newz);
+
+				glColor3f(1.0f, 1.0f, 1.0f);
+				glVertex3f(i, 0.0f, j);
+				glVertex3f(i, 0.0f, j + newz);
+				glVertex3f(i + newx, 0.0f, j + newz);
+				
+
+		// TOPO
+				glColor3f(1.0f, 0.0f, 0.0f);
+				glVertex3f(i, y, j);
+				glVertex3f(i + newx, y, j + newz);
+				glVertex3f(i + newx, y, j);
+
+				glColor3f(1.0f, 1.0f, 1.0f);
+				glVertex3f(i, y, j);
+				glVertex3f(i, y, j + newz);
+				glVertex3f(i + newx, y, j + newz);
+			glEnd();
+		}
+	}
+	
+	for (float i = -(x / 2); i < x / 2; i += newx) {
+		for (float j = 0; j < y ; j += newy) {
+			glBegin(GL_TRIANGLES);
+			//FRENTE
+				glColor3f(1.0f, 1.0f, 0.0f);
+				glVertex3f(i, j, z/2);
+				glVertex3f(i + newx, j, z / 2);
+				glVertex3f(i + newx, j + newy, z/2);
+				
+				glColor3f(0.0f, 0.0f, 0.0f);
+				glVertex3f(i, j, z/2);
+				glVertex3f(i + newx, j + newy, z / 2);
+				glVertex3f(i, j + newy, z/2);
+				
+			// ATRÁS
+				glColor3f(0.0f, 0.0f, 0.0f);
+				glVertex3f(i, j, -z / 2);
+				glVertex3f(i + newx, j + newy, -z / 2);
+				glVertex3f(i + newx, j, -z / 2);
+
+				glColor3f(1.0f, 1.0f, 0.0f);
+				glVertex3f(i, j, -z / 2);
+				glVertex3f(i, j + newy, -z / 2);
+				glVertex3f(i + newx, j + newy, -z / 2);
+			glEnd();
+		}
+	}
+
+	for (float i = -(z / 2); i < z / 2; i += newz) {
+		for (float j = 0; j < y; j += newy) {
+			glBegin(GL_TRIANGLES);
+			// FACE DA ESQUERDA
+				glColor3f(0.0f, 0.0f, 1.0f);
+				glVertex3f(-x / 2, j, i);
+				glVertex3f(-x / 2, j, i + newz);
+				glVertex3f(-x / 2, j + newy, i);
+
+				glColor3f(1.0f, 0.0f, 0.49f);
+				glVertex3f(-x / 2, j, i + newz);
+				glVertex3f(-x / 2, j + newy, i+newz);
+				glVertex3f(-x / 2, j + newy, i);
+
+			// FACE DA DIREITA
+				glColor3f(1.0f, 0.5f, 0.0f);
+				glVertex3f(x / 2, j, i);
+				glVertex3f(x / 2, j + newy, i);
+				glVertex3f(x / 2, j, i + newz);
+
+				glColor3f(0.0f, 1.0f, 1.0f);
+				glVertex3f(x / 2, j, i + newz);
+				glVertex3f(x / 2, j + newy, i);
+				glVertex3f(x / 2, j + newy, i + newz);
+
+			glEnd();
+		}
+	}
+}
+=================================================================================================================================================
+void drawPlane(float size) {
+	float half = size / 2;
+
+	glBegin(GL_TRIANGLES);
+	glColor3f(1.0f, 0.0f, 0.0f);
+	glVertex3f(half, 0.0f, half);
+	glVertex3f(half, 0.0f, -half);
+	glVertex3f(-half, 0.0f, half);
+
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(half, 0.0f, -half);
+	glVertex3f(-half, 0.0f, -half);
+	glVertex3f(-half, 0.0f, half);
+
+	glColor3f(1.0f, 0.0f, 0.0f);
+	glVertex3f(half, 0.0f, half);
+	glVertex3f(-half, 0.0f, half);
+	glVertex3f(half, 0.0f, -half);
+
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(half, 0.0f, -half);
+	glVertex3f(-half, 0.0f, half);
+	glVertex3f(-half, 0.0f, -half);
+
+	glEnd();
+
+}
+===================================================================================================================================================
