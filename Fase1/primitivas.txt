@@ -119,3 +119,44 @@ void drawPlane(float size) {
 
 }
 ===================================================================================================================================================
+
+void drawCone(float radius, float height, int slices, int stacks) {
+	float alpha = 2 * M_PI / (float)slices;
+	float stackHeight = height / (float)stacks;
+	float upper_radius, bottom_radius , upper, bottom;
+	for (int i = 0; i <= slices; i++) {
+		float delta_alpha = i * alpha;
+		// BASE DO CONE
+		glBegin(GL_TRIANGLES);
+		glColor3f(0.0f, 1.0f, 0.0f);
+		glVertex3f(sin(delta_alpha + alpha) * radius, 0.0f, cos(delta_alpha + alpha) * radius);
+		glVertex3f(0.0f, 0.0f, 0.0f);
+		glVertex3f(sin(delta_alpha) * radius, 0.0f, cos(delta_alpha) * radius);
+		glEnd();
+	}
+
+	for (int j = 0; j < stacks; j++) {
+
+		bottom = j * stackHeight;
+		bottom_radius = radius - ((radius / (float)stacks) * j);
+		
+		upper = (j + 1) * stackHeight;
+		upper_radius = radius - ((radius / (float)stacks) * (j + 1));
+
+		for (int i = 0; i < slices; i++) {
+			float delta_alpha = i * alpha;
+
+			glBegin(GL_TRIANGLES);
+			glColor3f(0.5f, 0.5f, 0.5f);
+			glVertex3f(bottom_radius * sin(delta_alpha), bottom, bottom_radius * cos(delta_alpha));
+			glVertex3f(upper_radius * sin(delta_alpha+alpha), upper, upper_radius * cos(delta_alpha + alpha));
+			glVertex3f(upper_radius * sin(delta_alpha), upper, upper_radius*cos(delta_alpha));
+
+			glColor3f(0.5f, 0.5f, 0.0f);
+			glVertex3f(bottom_radius * sin(delta_alpha), bottom, bottom_radius * cos(delta_alpha));
+			glVertex3f(bottom_radius * sin(delta_alpha+alpha), bottom, bottom_radius * cos(delta_alpha+alpha));
+			glVertex3f(upper_radius * sin(delta_alpha + alpha), upper, upper_radius * cos(delta_alpha + alpha));
+			glEnd();
+		}
+	}
+}
