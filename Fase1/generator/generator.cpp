@@ -99,7 +99,7 @@ void drawBox(float x, float y, float z, int w, string name) {
 			Vertex p4(i, 0.0f, j + newz);
 
 			Triangle t1(p1, p2, p3);
-			Triangle t2(p1, p4, p3);
+			Triangle t2(p3, p4, p1);
 
 			triangles.push_back(t1);
 			triangles.push_back(t2);
@@ -194,6 +194,7 @@ void drawCone(float radius, float height, int slices, int stacks, string name) {
 		Vertex p3(sin(delta_alpha) * radius, 0.0f, cos(delta_alpha) * radius);
 
 		Triangle t1(p1, p2, p3);
+		Triangle t2(p3, p1, p2);
 		triangles.push_back(t1);
 	}
 

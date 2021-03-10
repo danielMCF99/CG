@@ -23,7 +23,7 @@ std::vector<std::string> models;
 std::vector<std::vector<float>> trianglesCoordinates;
 
 GLfloat alpha, beta = 0.0f;
-GLfloat r = 10.0f;
+GLfloat r = 20.0f;
 
 // Ler do ficheiro XML os ficheiros .3d e coloc�-los num vetor
 void readFromXml() {
@@ -83,6 +83,7 @@ void read3Dfile() {
 void drawGL() {
 	for (std::vector<std::vector<float>>::iterator it = trianglesCoordinates.begin(); it != trianglesCoordinates.end(); ++it) {
 		glColor3f(it->at(0), it->at(1), it->at(2));
+
 		for (int i = 3; i < 12; i+=3) {
 			glVertex3f(it->at(i), it->at(i + 1), it->at(i + 2));
 		}
@@ -149,7 +150,7 @@ void renderScene(void) {
 
 	// set the camera
 	glLoadIdentity();
-	gluLookAt(5.0,5.0,5.0,
+	gluLookAt(r*sin(alpha)*cos(beta),r*sin(beta),r*cos(alpha)*cos(beta),
 		      0.0,0.0,0.0,
 			  0.0f,1.0f,0.0f);
 
@@ -175,16 +176,16 @@ void keyboard(unsigned char key, int x, int y) {
 	switch (key)
 	{
 	case 'w':
-		beta += 0.1f;
+		beta += 15.0f;
 		break;
 	case 's':
-		beta -= 0.1f;
+		beta -= 15.0f;
 		break;
 	case 'a':
-		alpha -= 0.1f;
+		alpha -= 15.0f;
 		break;
 	case 'd':
-		alpha += 0.1f;
+		alpha += 15.0f;
 		break;
 	default:
 		break;
