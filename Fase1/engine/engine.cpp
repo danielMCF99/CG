@@ -27,11 +27,11 @@ public:
 	std::vector<std::string> models;
 	std::vector<std::vector<float>> trianglesCoordinates;
 
-	// Ler do ficheiro XML os ficheiros .3d e colocá-los num vetor
+	// Ler do ficheiro XML os ficheiros .3d e colocï¿½-los num vetor
 	void readFromXml() {
 		XMLDocument file;
 		file.LoadFile(pathToXML);
-		// verifica se existe ficheiro ou não
+		// verifica se existe ficheiro ou nï¿½o
 		if (file.Error()) {
 			std::cout << "O ficheiro xml nao existe";
 			exit(0);
@@ -198,7 +198,6 @@ int main(int argc, char **argv) {
 	
 // put here the registration of the keyboard callbacks
 	glutKeyboardFunc(keyboard);
-
 
 //  OpenGL settings
 	glEnable(GL_DEPTH_TEST);
