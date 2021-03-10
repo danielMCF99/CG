@@ -25,13 +25,13 @@ std::vector<std::vector<float>> trianglesCoordinates;
 GLfloat alpha, beta = 0.0f;
 GLfloat r = 10.0f;
 
-// Ler do ficheiro XML os ficheiros .3d e colocá-los num vetor
+// Ler do ficheiro XML os ficheiros .3d e colocï¿½-los num vetor
 void readFromXml() {
 	XMLDocument file;
 
 	file.LoadFile(pathToXML);
 
-	// verifica se existe ficheiro ou não
+	// verifica se existe ficheiro ou nï¿½o
 	if (file.Error()) {
 		std::cout << "O ficheiro nao existe";
 		exit(0);
@@ -53,7 +53,7 @@ void read3Dfile() {
 	
 	for (std::vector<std::string>::iterator it = models.begin(); it != models.end(); ++it) {
 
-		std::string path = "../engine/desenhos/" + *it;
+		std::string path = "../engine/draws/" + *it;
 		std::ifstream File(path);
 		
 		if (File.fail()) {
@@ -159,11 +159,11 @@ void renderScene(void) {
 // put drawing instructions here
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	axis();
-	/*readFromXml();
+	readFromXml();
 	read3Dfile();
 	glBegin(GL_TRIANGLES);
 	drawGL();
-	glEnd();*/
+	glEnd();
 
 	// End of frame
 	glutSwapBuffers();

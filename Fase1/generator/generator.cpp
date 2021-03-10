@@ -77,7 +77,7 @@ void drawPlane(float size, string name) {
 
 	vector<Triangle> v = { t1,t2,t3,t4 };
 
-	string path = "../engine/desenhos/" + name;
+	string path = "../engine/draws/" + name;
 	trianglesToFile(v, path);
 
 }
@@ -132,7 +132,7 @@ void drawBox(float x, float y, float z, int w, string name) {
 			triangles.push_back(t1);
 			triangles.push_back(t2);
 
-			// ATRÁS
+			// ATRï¿½S
 			Vertex p5(i, j, -z / 2);
 			Vertex p6(i + newx, j + newy, -z / 2);
 			Vertex p7(i + newx, j, -z / 2);
@@ -176,7 +176,7 @@ void drawBox(float x, float y, float z, int w, string name) {
 		}
 	}
 
-	string path = "../engine/desenhos/" + name;
+	string path = "../engine/draws/" + name;
 	trianglesToFile(triangles, path);
 }
 
@@ -220,7 +220,7 @@ void drawCone(float radius, float height, int slices, int stacks, string name) {
 		}
 	}
 
-	string path = "../engine/desenhos/" + name;
+	string path = "../engine/draws/" + name;
 	trianglesToFile(triangles, path);
 }
 
