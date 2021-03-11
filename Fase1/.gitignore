@@ -1,7 +1,2 @@
-/engine/cenario.xml
 /cmake-build-debug
 /generator/generator
-/engine/draws/plane.3d
-/engine/draws/box.3d
-/engine/draws/cone.3d
-/engine/draws/sphere.3d
