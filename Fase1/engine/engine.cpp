@@ -156,23 +156,27 @@ void renderScene(void) {
 
 // write function to process keyboard events
 void keyboard(unsigned char key, int x, int y) {
-	switch (key)
+	switch (toupper(key))
 	{
-	case 'w':
+	case 'W':
 		beta += 0.1f;
 		if (beta > 1.5f)
 			beta = 1.5f;
 		break;
-	case 's':
+	case 'S':
 		beta -= 0.1f;
 		if (beta < -1.5f)
 			beta = -1.5f;
 		break;
-	case 'a':
+	case 'A':
 		alpha -= 0.1f;
 		break;
-	case 'd':
+	case 'D':
 		alpha += 0.1f;
+		break;
+	case 'R':
+		scene->readFromXml();
+		scene->read3Dfile();
 		break;
 	default:
 		break;
