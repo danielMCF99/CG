@@ -13,7 +13,7 @@ Commands:
     
 Keyboard Command:
 
-    As teclas 'W','A','S','D' permito-nos movimentar em câmara para qualquer direção.
-    A tecla 'R' permito-nos ter o programa a correr e adicionar um nova primitiva a partir do terminal.
+    As teclas 'W','A','S','D' permite-nos movimentar em câmara para qualquer direção.
+    A tecla 'R' permite-nos ter o programa a correr e adicionar um nova primitiva a partir do terminal.
 
     
