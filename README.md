@@ -22,6 +22,7 @@ Para funcionar no Mac, adicionar estas três linhas à CMakeList:
     set(CMAKE_CXX_COMPILER "/usr/local/bin/g++-10" CACHE STRING "C compiler" FORCE)
     set(CMAKE_C_COMPILER "/usr/local/bin/gcc-10" CACHE STRING "C++ compiler" FORCE)
     set(CMAKE_CXX_STANDARD 17)
+#### E, meter a CMakeList fora do engine, na pasta Fase1.
 
 
 
