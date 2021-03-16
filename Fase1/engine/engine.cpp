@@ -17,7 +17,7 @@
 #endif
 
 using namespace tinyxml2;
-char* pathToXML = "../engine/cenarios/cenario1.xml";
+char* pathToXML = "../engine/cenarios/cenario.xml";
 
 GLfloat alpha, beta = 0.0f;
 GLfloat r = 20.0f;
