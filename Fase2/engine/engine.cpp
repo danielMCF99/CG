@@ -21,7 +21,7 @@ using namespace tinyxml2;
 char* pathToXML = (char*)"../engine/cenarios/cenario.xml";
 
 GLfloat alpha = 0.0f, beta = 0.5f;
-GLfloat r = 100.0f;
+GLfloat r = 50.0f;
 
 class Group {
 
@@ -137,8 +137,10 @@ public:
 			}
 
 			else if (strcmp(next->Name(), "translate") == 0) {
+
 				if (next->FindAttribute("X")) {
 					trans[0] += atof(next->FindAttribute("X")->Value());
+					std::cout << trans[0];
 				}
 				if (next->FindAttribute("Y")) {
 					trans[1] += atof(next->FindAttribute("Y")->Value());
@@ -169,7 +171,7 @@ public:
 			}
 
 			else {
-				readFromXmlRec(next, trans, rot, scal);
+				readFromXmlRec(next->FirstChildElement(), trans, rot, scal);
 			}
 		}
 	}
