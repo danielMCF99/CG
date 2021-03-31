@@ -41,7 +41,7 @@
 
         <group id = "Marte">
             <translate X="52" Y="0" Z="0" />
-            <scale X="0.97" Y="1.44" Z="1.44" />
+            <scale X="1.44" Y="1.44" Z="1.44" />
             <models>
                 <model file="sphere.3d" />
             </models>
@@ -118,6 +118,13 @@
             <models>
                 <model file="sphere.3d" />
             </models>
+            <group id = "Titania">
+                <translate X="3" Y ="5" Z = ""/>
+                <scale X = "0.25" Y = "0.25" Z="0.25"/>
+                <models>
+                    <model file = "sphere.3d" />
+                </models>
+            </group>
         </group>
 
         <group id = "Neptuno">
@@ -126,6 +133,14 @@
             <models>
                 <model file="sphere.3d" />
             </models>
+
+            <group id = "Triton">
+                <translate X="2.65" Y="3.0" Z = "-2.0"/>
+                <scale X = "0.23" Y="0.23" Z="0.23"/>
+                <models>
+                    <model file="sphere.3d"/>
+                </models>
+            </group>
         </group>
     </group>
 </scene>
