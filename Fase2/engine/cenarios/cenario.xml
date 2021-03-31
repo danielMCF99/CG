@@ -1,0 +1,131 @@
+<scene>
+    <group>
+        <group id = "Sol">
+            <translate X="0" Y="0" Z="0" />
+            <scale X="20" Y="20" Z="20" />
+            <models>
+                <model file="sphere.3d" />
+            </models>
+        </group>
+
+        <group id = "Mercurio">
+            <translate X="28" Y="0" Z="0" />
+            <scale X="0.4" Y="0.4" Z="0.4" />
+            <models>
+                <model file="sphere.3d" />
+            </models>
+        </group>
+
+        <group id = "Venus">
+            <translate X="35" Y="0" Z="0" />
+            <scale X="1.74" Y="1.74" Z="1.74" />
+            <models>
+                <model file="sphere.3d" />
+            </models>
+        </group>
+
+        <group id = "Terra">
+            <translate X="41" Y="0" Z="0" />
+            <scale X="1.83" Y="1.83" Z="1.83" />
+            <models>
+                <model file="sphere.3d" />
+            </models>
+            <group id = "Lua">
+                <translate X="" Y="3.0" Z="-3.0" />
+                <scale X="0.49" Y="0.49" Z="0.49" />
+                <models>
+                    <model file = "sphere.3d"/>
+                </models>
+            </group>
+        </group>
+
+        <group id = "Marte">
+            <translate X="52" Y="0" Z="0" />
+            <scale X="0.97" Y="1.44" Z="1.44" />
+            <models>
+                <model file="sphere.3d" />
+            </models>
+            <group id = "Phobos">
+                <translate X="" Y="2.0" Z="3.0" />
+                <scale X="0.35" Y="0.35" Z="0.35" />
+                <models>
+                    <model file="sphere.3d" />
+                </models>
+            </group>
+            <group id = "Deimos">
+                <translate X="" Y="2.0" Z="-3.0" />
+                <scale X="0.25" Y="0.25" Z="0.25" />
+                <models>
+                    <model file="sphere.3d" />
+                </models>
+            </group>
+        </group>
+
+        <group id = "Jupiter">
+            <translate X="90" Y="0" Z="0" />
+            <scale X="8.19" Y="8.19" Z="8.19" />
+            <models>
+                <model file="sphere.3d" />
+            </models>
+            <group id = "Ganymede">
+                <translate X="" Y="-3" Z="12" />
+                <scale X="0.19" Y="0.19" Z="0.19" />
+                <models>
+                    <model file="sphere.3d" />
+                </models>
+            </group>
+            <group id = "Callisto">
+                <translate X="-5" Y="4" Z="-8.5" />
+                <scale X="0.15" Y="0.15" Z="0.15" />
+                <models>
+                    <model file="sphere.3d" />
+                </models>
+            </group>
+            <group id = "Io">
+                <translate X="0" Y="11" Z="-2.5" />
+                <scale X="0.12" Y="0.12" Z="0.12" />
+                <models>
+                    <model file="sphere.3d" />
+                </models>
+            </group>
+            <group id = "Europa">
+                <translate X="0" Y="-11" Z="2.5" />
+                <scale X="0.10" Y="0.10" Z="0.10" />
+                <models>
+                    <model file="sphere.3d" />
+                </models>
+            </group>
+        </group>
+
+        <group id = "Saturno">
+            <translate X="130" Y="0" Z="0" />
+            <scale X="6.9" Y="6.9" Z="6.9" />
+            <models>
+                <model file="sphere.3d" />
+            </models>
+            <group id = "Titan">
+                <translate X="" Y="11" Z="-5" />
+                <scale X="0.2" Y="0.2" Z="0.2" />
+                <models>
+                    <model file="sphere.3d" />
+                </models>
+            </group>
+        </group>
+
+        <group id = "Urano">
+            <translate X="150" Y="0" Z="0" />
+            <scale X="1.788" Y="1.788" Z="1.788" />
+            <models>
+                <model file="sphere.3d" />
+            </models>
+        </group>
+
+        <group id = "Neptuno">
+            <translate X = "170" Y="0" Z="0" />
+            <scale X="5.322" Y="5.322" Z="5.322" />
+            <models>
+                <model file="sphere.3d" />
+            </models>
+        </group>
+    </group>
+</scene>
