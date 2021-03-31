@@ -301,17 +301,29 @@ void keyboard(unsigned char key, int x, int y) {
 		beta += 0.1f;
 		if (beta > 1.5f)
 			beta = 1.5f;
+		glutPostRedisplay();
 		break;
 	case 'S':
 		beta -= 0.1f;
 		if (beta < -1.5f)
 			beta = -1.5f;
+		glutPostRedisplay();
 		break;
 	case 'A':
 		alpha -= 0.1f;
+		glutPostRedisplay();
 		break;
 	case 'D':
 		alpha += 0.1f;
+		glutPostRedisplay();
+		break;
+	case 'Z':
+		r += 5.0f;
+		glutPostRedisplay();
+		break;
+	case 'X':
+		r -= 5.0f;
+		glutPostRedisplay();
 		break;
 	case 'R':
 		scene->readFromXml();
@@ -320,8 +332,8 @@ void keyboard(unsigned char key, int x, int y) {
 	default:
 		break;
 	};
-	glutPostRedisplay();
 }
+
 
 
 int main(int argc, char **argv) {
