@@ -1,0 +1,10 @@
+<scene>
+	<group>
+		<translation time="10">
+			<point X="0" Y="0" Z="0"/>
+		</translation>
+		<models>
+			<model file="torus.3d"/>
+		</models>
+	</group>
+</scene>
