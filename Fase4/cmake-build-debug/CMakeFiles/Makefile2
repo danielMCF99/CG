@@ -72,7 +72,7 @@ CMAKE_BINARY_DIR = /Users/ricascross/Desktop/2semestre/CG/CG/Fase4/cmake-build-d
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/class9.dir/all
+all: CMakeFiles/Fase4.dir/all
 
 .PHONY : all
 
@@ -82,36 +82,36 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/class9.dir/clean
+clean: CMakeFiles/Fase4.dir/clean
 
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/class9.dir
+# Target rules for target CMakeFiles/Fase4.dir
 
 # All Build rule for target.
-CMakeFiles/class9.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/class9.dir/build.make CMakeFiles/class9.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/class9.dir/build.make CMakeFiles/class9.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/ricascross/Desktop/2semestre/CG/CG/Fase4/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target class9"
-.PHONY : CMakeFiles/class9.dir/all
+CMakeFiles/Fase4.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Fase4.dir/build.make CMakeFiles/Fase4.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Fase4.dir/build.make CMakeFiles/Fase4.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/ricascross/Desktop/2semestre/CG/CG/Fase4/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target Fase4"
+.PHONY : CMakeFiles/Fase4.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/class9.dir/rule: cmake_check_build_system
+CMakeFiles/Fase4.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ricascross/Desktop/2semestre/CG/CG/Fase4/cmake-build-debug/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/class9.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/Fase4.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ricascross/Desktop/2semestre/CG/CG/Fase4/cmake-build-debug/CMakeFiles 0
-.PHONY : CMakeFiles/class9.dir/rule
+.PHONY : CMakeFiles/Fase4.dir/rule
 
 # Convenience name for target.
-class9: CMakeFiles/class9.dir/rule
+Fase4: CMakeFiles/Fase4.dir/rule
 
-.PHONY : class9
+.PHONY : Fase4
 
 # clean rule for target.
-CMakeFiles/class9.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/class9.dir/build.make CMakeFiles/class9.dir/clean
-.PHONY : CMakeFiles/class9.dir/clean
+CMakeFiles/Fase4.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Fase4.dir/build.make CMakeFiles/Fase4.dir/clean
+.PHONY : CMakeFiles/Fase4.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.
