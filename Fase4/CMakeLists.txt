@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 # Project Name
-PROJECT(Fase4)
+PROJECT(SolarSystem)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
@@ -80,5 +80,7 @@ endif(WIN32)
 set(CMAKE_CXX_COMPILER "/usr/local/bin/g++-10" CACHE STRING "C compiler" FORCE)
 set(CMAKE_C_COMPILER "/usr/local/bin/gcc-10" CACHE STRING "C++ compiler" FORCE)
 set(CMAKE_CXX_STANDARD 17)
+
+
 
 

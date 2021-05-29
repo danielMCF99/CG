@@ -67,10 +67,10 @@ RM = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/ricascross/Desktop/2semestre/CG/CG/Fase4
+CMAKE_SOURCE_DIR = /Users/ricascross/Downloads/Fase4
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/ricascross/Desktop/2semestre/CG/CG/Fase4/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/ricascross/Downloads/Fase4/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -99,9 +99,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ricascross/Desktop/2semestre/CG/CG/Fase4/cmake-build-debug/CMakeFiles /Users/ricascross/Desktop/2semestre/CG/CG/Fase4/cmake-build-debug//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ricascross/Downloads/Fase4/cmake-build-debug/CMakeFiles /Users/ricascross/Downloads/Fase4/cmake-build-debug//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ricascross/Desktop/2semestre/CG/CG/Fase4/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ricascross/Downloads/Fase4/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -130,17 +130,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named Fase4
+# Target rules for targets named SolarSystem
 
 # Build rule for target.
-Fase4: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Fase4
-.PHONY : Fase4
+SolarSystem: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 SolarSystem
+.PHONY : SolarSystem
 
 # fast build rule for target.
-Fase4/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Fase4.dir/build.make CMakeFiles/Fase4.dir/build
-.PHONY : Fase4/fast
+SolarSystem/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SolarSystem.dir/build.make CMakeFiles/SolarSystem.dir/build
+.PHONY : SolarSystem/fast
 
 engine/engine.o: engine/engine.cpp.o
 
@@ -148,7 +148,7 @@ engine/engine.o: engine/engine.cpp.o
 
 # target to build an object file
 engine/engine.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Fase4.dir/build.make CMakeFiles/Fase4.dir/engine/engine.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SolarSystem.dir/build.make CMakeFiles/SolarSystem.dir/engine/engine.cpp.o
 .PHONY : engine/engine.cpp.o
 
 engine/engine.i: engine/engine.cpp.i
@@ -157,7 +157,7 @@ engine/engine.i: engine/engine.cpp.i
 
 # target to preprocess a source file
 engine/engine.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Fase4.dir/build.make CMakeFiles/Fase4.dir/engine/engine.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SolarSystem.dir/build.make CMakeFiles/SolarSystem.dir/engine/engine.cpp.i
 .PHONY : engine/engine.cpp.i
 
 engine/engine.s: engine/engine.cpp.s
@@ -166,7 +166,7 @@ engine/engine.s: engine/engine.cpp.s
 
 # target to generate assembly for a file
 engine/engine.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Fase4.dir/build.make CMakeFiles/Fase4.dir/engine/engine.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SolarSystem.dir/build.make CMakeFiles/SolarSystem.dir/engine/engine.cpp.s
 .PHONY : engine/engine.cpp.s
 
 # Help Target
@@ -177,7 +177,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... Fase4"
+	@echo "... SolarSystem"
 	@echo "... engine/engine.o"
 	@echo "... engine/engine.i"
 	@echo "... engine/engine.s"

@@ -10,32 +10,178 @@
 #include "../tinyxml2/tinyxml2.h"
 #include <algorithm>
 #include <cctype>
+#include </usr/local/Cellar/devil/1.8.0_2/include/IL/il.h>
 
 #ifdef __APPLE__
 #include <GLUT/glut.h>
+#include </usr/local/Cellar/devil/1.8.0_2/include/IL/il.h>
 #else
 #include <GL/glew.h>
 #include <GL/glut.h>
 #endif
 
+
 #define _USE_MATH_DEFINES
 #include <math.h>
+
+int imageWidth;
+unsigned char* imageData;
 
 using namespace tinyxml2;
 char* pathToXML = (char*)"../engine/cenarios/cenario.xml";
 
-GLfloat alpha = 0.0f, beta = 0.5f;
-GLfloat r = 170.0f;
+float x = 0.0f;
+float z = 0.0f;
+
+float pX = 1.0;
+float pY = 2;
+float pZ = 1.0;
 
 float camX = 00, camY = 30, camZ = 40;
 int startX, startY, tracking = 0;
+
+int alpha = 0, beta = 45, r = 50;
+float radius = 50.0f, ri = 35.0f, rc = 15.0f;
 
 int timebase = 0, frame = 0;
 float Y[3] = { 0.0f, 1.0f, 0.0f };
 float tesselation = 100;
 
 
-GLuint buffers[2];
+GLuint points;
+GLuint normals;
+GLuint textures;
+
+//############################### LIGHT CLASS AND LIGHT LOADING #######################################################################################################//
+
+
+class Light {
+    public:
+        char* type;
+        float pos[4];
+        float spotDir[3];
+        float attenuation = 1;
+        float angle;
+
+        //POINT LIGHT
+
+        Light(char* t, float x, float y, float z, float att) {
+            type = t;
+            pos[0] = x;
+            pos[1] = y;
+            pos[2] = z;
+            pos[3] = 1.0;
+            attenuation = att;
+        }
+
+        //SPOTLIGHT LIGHT
+        Light(char* t, float posx, float posy, float posz, float ang, float att, float dirx, float diry, float dirz) {
+            type = t;
+            pos[0] = posx;
+            pos[1] = posy;
+            pos[2] = posz;
+            pos[3] = 1.0;
+            angle = isValid(ang) ? ang : 0;
+            attenuation = att;
+            spotDir[0] = dirx;
+            spotDir[1] = diry;
+            spotDir[2] = dirz;
+        }
+
+        //DIRECCIONAL LIGHT
+        Light(char* t, float posx, float posy, float posz) {
+            type = t;
+            pos[0] = posx;
+            pos[1] = posy;
+            pos[2] = posz;
+            pos[3] = 0.0;
+        }
+
+        bool isValid(float ang) {
+            return ((ang >= 0 && ang <= 90) || ang == 180);
+        }
+
+        Light(const Light& l1) {
+            type = l1.type;
+            pos[0] = l1.pos[0];
+            pos[1] = l1.pos[1];
+            pos[2] = l1.pos[2];
+            pos[3] = l1.pos[3];
+        }
+};
+
+std::vector<Light> lights;
+
+void loadLights() {
+    int i = 0;
+    GLfloat amb[3] = { 0.001, 0.001, 0.001 };
+    GLfloat diff[4] = { 1, 1, 1, 1.0 };
+
+    for (auto light : lights) {
+
+        if (i == 8) {
+            std::cout << "Reached max number of lights!\n";
+            exit(-1);
+        }
+        glEnable(GL_LIGHT0 + i);
+        glLightfv(GL_LIGHT0 + i, GL_AMBIENT, amb); // luz ambiente
+        if (strcmp(light.type, "POINT") == 0) {
+            glLightfv(GL_LIGHT0 + i, GL_POSITION, light.pos); // posição da luz
+            glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, light.attenuation);
+        }
+        else if (strcmp(light.type, "DIRECTIONAL") == 0) {
+            glLightfv(GL_LIGHT0 + i, GL_POSITION, light.pos);
+        }
+        else if (strcmp(light.type, "SPOT") == 0) {
+            glLightfv(GL_LIGHT0, GL_POSITION, light.pos);
+            glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, light.spotDir);
+            glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, light.angle);       // [0,90] ou 180
+        }
+        else {
+
+        }
+        i++;
+    }
+}
+
+//################################## TEXTURE LOADING ####################################################################################################//
+
+
+int loadTexture(std::string textureFile) {
+
+    unsigned int t, tw, th;
+    unsigned char* texData;
+    unsigned int texture;
+
+    ilInit();
+    ilEnable(IL_ORIGIN_SET);
+    ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
+
+    ilGenImages(1, &t);
+    ilBindImage(t);
+    const char* textureNameFile= textureFile.c_str();
+    ilLoadImage((ILstring)textureNameFile);
+    tw = ilGetInteger(IL_IMAGE_WIDTH);
+    th = ilGetInteger(IL_IMAGE_HEIGHT);
+    ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+    texData = ilGetData();
+
+    glGenTextures(1, &texture);
+
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tw, th, 0, GL_RGBA, GL_UNSIGNED_BYTE, texData);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    return texture;
+}
+
+//################################  CATMULL RELATED  ###################################################################################################//
 
 
 void buildRotMatrix(float* x, float* y, float* z, float* m) {
@@ -130,6 +276,8 @@ void renderCatmullRomCurve(std::vector< std::vector< float >> basePoints) {
     glEnd();
 }
 
+//######################################### CLASS GROUP ############################################################################################//
+
 class Group {
 
 public:
@@ -138,13 +286,18 @@ public:
     std::vector<float> scale;
     std::vector<float> vbo;
     std::vector<std::vector<float>> triangleCoordinates;
-    std::vector<float> colors;
     std::vector<float> time = { 1,1,1,1,1 };
     std::vector<float> elapsedTime = { 0,0,0,0 };
     std::vector<float> vbo_normals;
+    std::vector<float> vbo_texture;
+    std::vector<float> rgbDif;
+    std::vector<float> rgbSpe;
+    std::vector<float> rgbEme;
+    std::vector<float> rgbAmb;
     int pos;
     float rotationTime;
     float angle = 0.0f;
+    GLuint textureID = 0;
 
     Group(){
         rotation = { 0.0f, 0.0f, 0.0f };
@@ -210,7 +363,7 @@ public:
             vbo.push_back(x9);
         }
 
-        while(getline(File, myText)){
+        while(getline(File, myText) && (myText.compare("Textures") != 0)){
 
             std::string token = myText.substr(myText.find(delimiter) + 1, myText.length());
 
@@ -219,7 +372,6 @@ public:
             std::istringstream data(token);
 
             data >> x1 >> x2 >> x3 >> x4 >> x5 >> x6 >> x7 >> x8 >> x9;
-            std::vector<float> vf = { x1,x2,x3,x4,x5,x6,x7,x8,x9 };
 
             vbo_normals.push_back(x1);
             vbo_normals.push_back(x2);
@@ -234,15 +386,40 @@ public:
             vbo_normals.push_back(x9);
 
         }
+
+        while (getline(File, myText)) {
+
+            std::string token = myText.substr(myText.find(delimiter) + 1, myText.length());
+
+            token.erase(std::remove(token.begin(), token.end(), ','), token.end());
+
+            std::istringstream data(token);
+
+            data >> x1 >> x2 >> x3 >> x4 >> x5 >> x6 >> x7 >> x8 >> x9;
+
+            vbo_texture.push_back(x1);
+            vbo_texture.push_back(x2);
+
+            vbo_texture.push_back(x4);
+            vbo_texture.push_back(x5);
+
+            vbo_texture.push_back(x7);
+            vbo_texture.push_back(x8);
+        }
     }
 };
+
+//############################## CLASS SCENE ########################################################################################################//
+
 
 class Scene {
 public:
     std::vector<std::string> files;
     std::unordered_map<std::string, std::vector<Group*>> data;
 
-    void addFile(std::string filename, std::vector<std::vector<std::vector<float>>> trans, std::vector<float> rot, std::vector<float> scal, std::vector<float> t,std::vector<float> col,int pos,float rotT) {
+    void addFile(std::string filename, std::vector<std::vector<std::vector<float>>> trans, std::vector<float> rot, std::vector<float> scal,
+                                        std::vector<float> t,int pos,float rotT,std::string texture,
+                                        std::vector<float> rgbD, std::vector<float> rgbS, std::vector<float> rgbE, std::vector<float> rgbA) {
         Group* g = new Group();
         g->translation = trans;
         g->setRotation(rot[0], rot[1], rot[2]);
@@ -251,7 +428,16 @@ public:
         g->time = t;
         g->setPos(pos);
         g->rotationTime = rotT;
-        g->colors = col;
+        g->rgbDif = rgbD;
+        g->rgbEme = rgbE;
+        g->rgbSpe = rgbS;
+        g->rgbAmb = rgbA;
+
+        if (texture.size() > 0) {
+            std::string pathText = "../engine/textures/";
+            g->textureID = loadTexture(pathText + texture);
+        }
+        
         if (rotT != 1) {
             g->angle = 360 / rotT;
         }
@@ -269,24 +455,10 @@ public:
     }
 
     void readFromXmlRec(XMLElement* element , std::vector<std::vector<std::vector<float>>> trans, std::vector<float> rot,
-                        std::vector<float> scal, std::vector<float> time, std::vector<float> col ,int pos,float rotT) {
+                        std::vector<float> scal, std::vector<float> time,int pos,float rotT) {
         for (XMLElement* next = element; next != NULL; next = next->NextSiblingElement()) {
 
-
-            if (strcmp(next->Name(), "colour") == 0) {
-                if (next->FindAttribute("red")) {
-                    col[0] = atof(next->FindAttribute("red")->Value());
-                }
-                if (next->FindAttribute("green")) {
-                    col[1] = atof(next->FindAttribute("green")->Value());
-                }
-                if (next->FindAttribute("blue")) {
-                    col[2] = atof(next->FindAttribute("blue")->Value());
-                }
-            }
-
-
-            else if (strcmp(next->Name(), "rotate") == 0) {
+            if (strcmp(next->Name(), "rotate") == 0) {
                 if (next->FindAttribute("time")) {
                     rotT = atof(next->FindAttribute("time")->Value());
                 }
@@ -337,20 +509,38 @@ public:
             else if (strcmp(next->Name(), "models") == 0) {
                 for (XMLElement* model = next->FirstChildElement(); model != NULL; model = model->NextSiblingElement()) {
                     std::string filename = model->Attribute("file");
+                    std::string textureName = "";
+                    std::vector<float> rgbDif = { 0.8, 0.8, 0.8, 1.0 };
+                    std::vector<float> rgbEme = { 0, 0, 0, 1 };
+                    std::vector<float> rgbSpe = { 0.5, 0.5, 0.5, 1 };
+                    std::vector<float> rgbAmb = { 0.5, 0.5, 0.5, 1.0 };
+
+                    if (model->FindAttribute("texture")) {
+                        textureName = model->Attribute("texture");
+                    }
+                    if (model->FindAttribute("emR") && model->FindAttribute("emG") && model->FindAttribute("emB")) {
+                        rgbEme = { (float)atof(model->Attribute("emR")),  (float)atof(model->Attribute("emG")) , (float)atof(model->Attribute("emB")) , 1 };
+                    }
+                    if (model->FindAttribute("difR") && model->FindAttribute("difG") && model->FindAttribute("difB")) {
+                        rgbDif = { (float)atof(model->Attribute("difR")),  (float)atof(model->Attribute("difG")) , (float)atof(model->Attribute("difB")) , 1.0 };
+                    }
+                    if (model->FindAttribute("speR") && model->FindAttribute("speG") && model->FindAttribute("speB")) {
+                        rgbSpe = { (float)atof(model->Attribute("speR")),  (float)atof(model->Attribute("speG")) , (float)atof(model->Attribute("speB")), 1.0 };
+                    }
+                    if (model->FindAttribute("ambR") && model->FindAttribute("ambG") && model->FindAttribute("ambB")) {
+                        rgbAmb = { (float)atof(model->Attribute("ambR")),  (float)atof(model->Attribute("ambG")) , (float)atof(model->Attribute("ambB")), 1.0 };
+                    }
                     files.push_back(filename);
-                    addFile(filename, trans, rot, scal, time, col, pos, rotT);
+                    addFile(filename, trans, rot, scal, time, pos, rotT, textureName, rgbDif, rgbSpe, rgbEme, rgbAmb);
                 }
             }
 
             else if (strcmp(next->Name(), "group") == 0) {
-                readFromXmlRec(next->FirstChildElement(), trans, rot, scal, time, col, pos, rotT);
-
+                readFromXmlRec(next->FirstChildElement(), trans, rot, scal, time, pos, rotT);
             }
 
             else {
-
                 std::cout << "Comando Desconhecido" << std::endl;
-
             }
         }
     }
@@ -370,10 +560,45 @@ public:
             std::vector<float> rot = { 0.0f, 0.0f, 0.0f };
             std::vector<float> scal = { 1.0f , 1.0f, 1.0f };
             std::vector<float> time = { 1.0f,1.0f,1.0f,1.0f,1.0f };
-            std::vector<float> col = { 0.5f,0.5f,0.5f };
             int pos = -1;
             float rotT = 1;
-            readFromXmlRec(next, trans, rot, scal, time, col, pos, rotT);
+            if (strcmp(next->Name(), "lights") == 0) {
+
+                for (auto light = next->FirstChildElement(); light != NULL; light = light->NextSiblingElement()) {
+                    if (light->FindAttribute("type")) {
+                        //POINT LIGHT
+                        if ((strcmp(light->Attribute("type"), "POINT") == 0) && light->FindAttribute("posX") && light->FindAttribute("posY") && light->FindAttribute("posZ") && light->FindAttribute("att")) {
+                            Light pointLight("POINT", (float)atof(light->FindAttribute("posX")->Value()), (float)atof(light->FindAttribute("posY")->Value()), (float)atof(light->FindAttribute("posZ")->Value()), (float)atof(light->FindAttribute("att")->Value()));
+                            lights.push_back(pointLight);
+                        }
+
+                        //SPOTLIGHT LIGHT
+                        else if ((strcmp(light->Attribute("type"), "SPOT") == 0) && light->FindAttribute("posX") && light->FindAttribute("posY") && light->FindAttribute("posZ") && light->FindAttribute("ang") && light->FindAttribute("att") && light->FindAttribute("dirX") && light->FindAttribute("dirY") && light->FindAttribute("dirZ")) {
+                            Light spotLight("SPOT", (float)atof(light->FindAttribute("posX")->Value()), (float)atof(light->FindAttribute("posY")->Value()), (float)atof(light->FindAttribute("posZ")->Value()), (float)atof(light->FindAttribute("ang")->Value()), (float)atof(light->FindAttribute("att")->Value()), (float)atof(light->FindAttribute("dirX")->Value()), (float)atof(light->FindAttribute("dirY")->Value()), (float)atof(light->FindAttribute("dirZ")->Value()));
+                            lights.push_back(spotLight);
+                        }
+
+                        //DIRECTIONAL LIGHT
+                        else if ((strcmp(light->Attribute("type"), "DIRECTIONAL") == 0) && light->FindAttribute("posX") && light->FindAttribute("posY") && light->FindAttribute("posZ")) {
+                            Light dirLight("DIRECTIONAL", (float)atof(light->FindAttribute("posX")->Value()), (float)atof(light->FindAttribute("posY")->Value()), (float)atof(light->FindAttribute("posZ")->Value()));
+                            lights.push_back(dirLight);
+                        }
+
+                        else {
+                            std::cout << "Coordinates on the light tags are not right!\n";
+                            exit(-1);
+                        }
+
+                    }
+                    else {
+                        std::cout << "One light source does not have a type!\n";
+                        exit(-1);
+                    }
+                }
+            }
+            else {
+                readFromXmlRec(next, trans, rot, scal, time, pos, rotT);
+            }
         }
     }
 
@@ -386,7 +611,7 @@ public:
         for (auto itr = data.begin(); itr != data.end(); itr++) {
             std::string key = itr->first;
             for (auto aux : data[key]) {
-                glColor3f(aux->colors[0]/255, aux->colors[1]/255, aux->colors[2]/255);
+                //glColor3f(aux->colors[0]/255, aux->colors[1]/255, aux->colors[2]/255);
                 glPushMatrix();
                 for (int i = 0; i <= aux->pos ; i++) {
                     renderCatmullRomCurve(aux->translation[i]);
@@ -417,15 +642,33 @@ public:
 
                 glScalef(aux->scale[0], aux->scale[1], aux->scale[2]);
 
-                glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
+                glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, aux->rgbDif.data());
+
+                glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, aux->rgbSpe.data());
+
+                glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, aux->rgbEme.data());
+
+                glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, aux->rgbAmb.data());
+
+                glBindBuffer(GL_ARRAY_BUFFER, points);
                 glBufferData(GL_ARRAY_BUFFER, sizeof(float) * aux->vbo.size(), aux->vbo.data(), GL_STATIC_DRAW);
                 glVertexPointer(3, GL_FLOAT, 0, 0);
 
-                glBindBuffer(GL_ARRAY_BUFFER, buffers[1]);
-                glBufferData(GL_ARRAY_BUFFER, sizeof(float) * aux->vbo_normals.size(), aux->vbo_normals.data(), GL_STATIC_DRAW);
-                glNormalPointer(GL_FLOAT, 0, 0);
+                if (aux->vbo_normals.size() > 0) {
+                    glBindBuffer(GL_ARRAY_BUFFER, normals);
+                    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * aux->vbo_normals.size(), aux->vbo_normals.data(), GL_STATIC_DRAW);
+                    glNormalPointer(GL_FLOAT, 0, 0);
+                }
 
+                if (aux->vbo_texture.size() > 0 && aux->textureID > 0) {
+                    glBindBuffer(GL_ARRAY_BUFFER, textures);
+                    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * aux->vbo_texture.size(), aux->vbo_texture.data(), GL_STATIC_DRAW);
+                    glTexCoordPointer(2, GL_FLOAT, 0, 0);
+                    glBindTexture(GL_TEXTURE_2D, aux->textureID);
+                }
+                
                 glDrawArrays(GL_TRIANGLES, 0, ((GLuint)aux->vbo.size() / 3));
+
                 glPopMatrix();
 
             }
@@ -433,6 +676,8 @@ public:
     }
 };
 
+
+//############################# END OF CLASS SCENE #########################################################################################################//
 
 
 void changeSize(int w, int h) {
@@ -466,33 +711,22 @@ void renderScene(void) {
     float fps;
     int time;
     char s[64];
-
-    float pos[4] = {-1.0, 1.0, 1.0, 0.0};
-    glLightfv(GL_LIGHT0, GL_POSITION, pos);
-
-    float dark[] = { 0.2, 0.2, 0.2, 1.0 };
-    float white[] = { 0.8, 0.8, 0.8, 1.0 };
-    float red[] = { 0.8, 0.2, 0.2, 1.0 };
-
     // clear buffers
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // set the camera
     glLoadIdentity();
-    gluLookAt((float)r * sin(alpha) * cos(beta),(float)r * sin(beta), (float)r * cos(alpha) * cos(beta),
-              0.0f, 0.0f, 0.0f,
-              0.0f, 1.0f, 0.0f);
+    gluLookAt(pX, pY, pZ,
+        pX + sin(alpha * M_PI / 180), pY, pZ + cos(alpha * M_PI / 180),
+        0.0f, 1.0f, 0.0f);
+    //gluLookAt((float)r * sin(alpha) * cos(beta),(float)r * sin(beta), (float)r * cos(alpha) * cos(beta),
+    //          0.0f, 0.0f, 0.0f,
+    //          0.0f, 1.0f, 0.0f);
 
 // put the geometric transformations here
-    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, dark);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, white);
-    glMaterialf(GL_FRONT, GL_SHININESS, 128);
-
-    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, red);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, white);
-    glMaterialf(GL_FRONT, GL_SHININESS, 128);
 
 // put drawing instructions here
+    loadLights();
     scene->draw();
     frame++;
     time = glutGet(GLUT_ELAPSED_TIME);
@@ -503,40 +737,35 @@ void renderScene(void) {
         sprintf(s, "FPS: %f6.2", fps);
         glutSetWindowTitle(s);
     }
-
     // End of frame
     glutSwapBuffers();
 }
-
 
 // write function to process keyboard events
 void keyboard(unsigned char key, int x, int y) {
     switch (toupper(key))
     {
         case 'W':
-            beta += 0.1f;
-            if (beta > 1.5f)
-                beta = 1.5f;
+            pX += sin(alpha * M_PI / 180);
+            pZ += cos(alpha * M_PI / 180);
             break;
         case 'S':
-            beta -= 0.1f;
-            if (beta < -1.5f)
-                beta = -1.5f;
+            pX -= sin(alpha * M_PI / 180);
+            pZ -= cos(alpha * M_PI / 180);
             break;
         case 'A':
-            alpha -= 0.1f;
+            pX += sin((M_PI / 2) + alpha * M_PI / 180);
+            pZ += cos((M_PI / 2) + alpha * M_PI / 180);
             break;
         case 'D':
-            alpha += 0.1f;
+            pX -= sin((M_PI / 2) + alpha * M_PI / 180);
+            pZ -= cos((M_PI / 2) + alpha * M_PI / 180);
             break;
         case 'Z':
-            r += 5.0f;
+            pY += 5.0f;
             break;
         case 'X':
-            r -= 5.0f;
-            break;
-        case 'R':
-            scene->readFromXml();
+            pY -= 5.0f;
             break;
         case 'P':
             glPolygonMode(GL_FRONT, GL_FILL);
@@ -566,28 +795,32 @@ void keyboard(unsigned char key, int x, int y) {
     glutPostRedisplay();
 }
 
+void processSpecialKeys(int key, int xx, int yy) {
+    if (key == GLUT_KEY_RIGHT) {
+        alpha -= 1;
+    }
+    else if (key == GLUT_KEY_LEFT) {
+        alpha += 1;
+    }
+}
+
 void init(){
     scene->readFromXml();
 
     // OpenGL settings
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
+    glEnable(GL_TEXTURE_2D);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
+    glEnable(GL_COLOR_MATERIAL);
 
-    glGenBuffers(2, buffers);
-
-
-    GLfloat dark[4] = {0.2, 0.2, 0.2, 1.0};
-    GLfloat white[4] = {1.0, 1.0, 1.0 , 1.0};
-
-    glLightfv(GL_LIGHT0, GL_AMBIENT, dark);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, white);
-    glLightfv(GL_LIGHT0, GL_SPECULAR, white);
-
+    glGenBuffers(1, &points);
+    glGenBuffers(1, &normals);
+    glGenBuffers(1, &textures);
 }
 
 
@@ -607,11 +840,12 @@ int main(int argc, char **argv) {
 
 // put here the registration of the keyboard callbacks
     glutKeyboardFunc(keyboard);
+    glutSpecialFunc(processSpecialKeys);
 
-#ifndef __APPLE__
-    // init GLEW
-	glewInit();
-#endif
+    #ifndef __APPLE__
+        // init GLEW
+        glewInit();
+    #endif
 
     init();
 

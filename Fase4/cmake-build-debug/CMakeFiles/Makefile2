@@ -63,16 +63,16 @@ RM = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/ricascross/Desktop/2semestre/CG/CG/Fase4
+CMAKE_SOURCE_DIR = /Users/ricascross/Downloads/Fase4
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/ricascross/Desktop/2semestre/CG/CG/Fase4/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/ricascross/Downloads/Fase4/cmake-build-debug
 
 #=============================================================================
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/Fase4.dir/all
+all: CMakeFiles/SolarSystem.dir/all
 
 .PHONY : all
 
@@ -82,36 +82,36 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/Fase4.dir/clean
+clean: CMakeFiles/SolarSystem.dir/clean
 
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/Fase4.dir
+# Target rules for target CMakeFiles/SolarSystem.dir
 
 # All Build rule for target.
-CMakeFiles/Fase4.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Fase4.dir/build.make CMakeFiles/Fase4.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Fase4.dir/build.make CMakeFiles/Fase4.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/ricascross/Desktop/2semestre/CG/CG/Fase4/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target Fase4"
-.PHONY : CMakeFiles/Fase4.dir/all
+CMakeFiles/SolarSystem.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SolarSystem.dir/build.make CMakeFiles/SolarSystem.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SolarSystem.dir/build.make CMakeFiles/SolarSystem.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/ricascross/Downloads/Fase4/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target SolarSystem"
+.PHONY : CMakeFiles/SolarSystem.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/Fase4.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ricascross/Desktop/2semestre/CG/CG/Fase4/cmake-build-debug/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/Fase4.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ricascross/Desktop/2semestre/CG/CG/Fase4/cmake-build-debug/CMakeFiles 0
-.PHONY : CMakeFiles/Fase4.dir/rule
+CMakeFiles/SolarSystem.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ricascross/Downloads/Fase4/cmake-build-debug/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/SolarSystem.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ricascross/Downloads/Fase4/cmake-build-debug/CMakeFiles 0
+.PHONY : CMakeFiles/SolarSystem.dir/rule
 
 # Convenience name for target.
-Fase4: CMakeFiles/Fase4.dir/rule
+SolarSystem: CMakeFiles/SolarSystem.dir/rule
 
-.PHONY : Fase4
+.PHONY : SolarSystem
 
 # clean rule for target.
-CMakeFiles/Fase4.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Fase4.dir/build.make CMakeFiles/Fase4.dir/clean
-.PHONY : CMakeFiles/Fase4.dir/clean
+CMakeFiles/SolarSystem.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SolarSystem.dir/build.make CMakeFiles/SolarSystem.dir/clean
+.PHONY : CMakeFiles/SolarSystem.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.
